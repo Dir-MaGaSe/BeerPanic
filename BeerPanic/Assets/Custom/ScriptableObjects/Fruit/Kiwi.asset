@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39eebc63ad459c645bb0087f8dc347eb, type: 3}
+  m_Name: Kiwi
+  m_EditorClassIdentifier: 
+  elementName: kiwi
+  elementSprite: {fileID: 4138223980208024357, guid: 5100b75572e484e458e4340e2afe9454, type: 3}
+  spawnProbability: 0.65
+  fallSpeed: 2.35
+  mass: 1
+  linearDrag: 0
+  gravityScale: 0.1
+  basePoints: 115
+  validCombinations: []
+  combinationMultiplier: 2
