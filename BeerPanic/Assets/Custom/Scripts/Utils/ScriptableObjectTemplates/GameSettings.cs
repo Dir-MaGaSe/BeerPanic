@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "GameSettings", menuName = "Juego/Configuración/Game Settings")]
+[CreateAssetMenu(fileName = "NewGameSettings", menuName = "BeerPanic/Settings/Game Settings")]
 public class GameSettings : ScriptableObject
 {
     [Header("Rendimiento")]

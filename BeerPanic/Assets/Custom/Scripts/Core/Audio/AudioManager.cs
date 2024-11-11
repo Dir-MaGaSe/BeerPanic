@@ -55,7 +55,13 @@ public class AudioManager : MonoBehaviour
             effectDictionary[effect.id] = effect;
         }
         
-        //audioSourcePool = new ObjectPool<AudioSource>(CreateAudioSource, 5);
+        audioSourcePool = new ObjectPool<AudioSource>(
+            CreateAudioSource,
+            5,
+            source => source.gameObject.SetActive(true),
+            source => source.gameObject.SetActive(false)
+        );
+        
         isInitialized = true;
     }
     

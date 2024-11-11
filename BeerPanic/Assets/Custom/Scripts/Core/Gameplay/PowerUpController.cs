@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(PlayerController))]
 public class PowerUpController : MonoBehaviour
 {
-    /*private Dictionary<PowerUpElement.PowerUpType, float> activeEffects = 
+    private Dictionary<PowerUpElement.PowerUpType, float> activeEffects = 
         new Dictionary<PowerUpElement.PowerUpType, float>();
     
     private PlayerController playerController;
@@ -53,5 +54,5 @@ public class PowerUpController : MonoBehaviour
         {
             activeEffects.Remove(effect);
         }
-    }*/
+    }
 }

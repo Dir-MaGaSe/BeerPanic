@@ -1,8 +1,11 @@
 using UnityEngine;
+using System.Collections;
 
+[RequireComponent(typeof(BoxCollider2D))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
-    /*[Header("Movimiento")]
+    [Header("Movimiento")]
     [SerializeField] private float baseMovementSpeed = 5f;
     [SerializeField] private float movementSmoothness = 0.1f;
     
@@ -12,7 +15,6 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private BoxCollider2D catchCollider;
     private float currentMovementSpeed;
-    private Vector2 currentCatchArea;
     private Vector2 movement;
     private bool isMovementModified;
     private float movementModifierEndTime;
@@ -26,14 +28,13 @@ public class PlayerController : MonoBehaviour
     
     private void Update()
     {
-        // Input para botones virtuales
         float horizontalInput = 0;
-        if (Input.GetKey(KeyCode.LeftArrow) || UIManager.Instance.IsLeftButtonPressed)
+        /*if (Input.GetKey(KeyCode.LeftArrow) || UIManager.Instance.IsLeftButtonPressed)
             horizontalInput = -1;
         else if (Input.GetKey(KeyCode.RightArrow) || UIManager.Instance.IsRightButtonPressed)
             horizontalInput = 1;
             
-        movement = new Vector2(horizontalInput, 0);
+        movement = new Vector2(horizontalInput, 0);*/
         
         CheckModifiersExpiration();
     }
@@ -53,9 +54,14 @@ public class PlayerController : MonoBehaviour
     
     public void ApplyCatchAreaModifier(float multiplier, float duration)
     {
-        Vector2 newSize = baseCatchArea * multiplier;
-        catchCollider.size = newSize;
-        currentCatchArea = newSize;
+        catchCollider.size = baseCatchArea * multiplier;
+        StartCoroutine(ResetCatchAreaAfterDuration(duration));
+    }
+    
+    private IEnumerator ResetCatchAreaAfterDuration(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        catchCollider.size = baseCatchArea;
     }
     
     private void CheckModifiersExpiration()
@@ -70,7 +76,6 @@ public class PlayerController : MonoBehaviour
     {
         currentMovementSpeed = baseMovementSpeed;
         catchCollider.size = baseCatchArea;
-        currentCatchArea = baseCatchArea;
         isMovementModified = false;
-    }*/
+    }
 }

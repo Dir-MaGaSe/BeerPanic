@@ -29,24 +29,25 @@ public class ElementSpawner : MonoBehaviour
     private void ValidateElements()
     {
         // Validar que tengamos los elementos requeridos según el documento técnico
-        Debug.AssertFormat(fruitPool.Count >= 10, "Se requieren al menos 10 tipos de frutas. Actual: {0}", fruitPool.Count);
-        Debug.AssertFormat(powerUpPool.Count >= 2, "Se requieren al menos 2 tipos de potenciadores. Actual: {0}", powerUpPool.Count);
-        Debug.AssertFormat(obstaclePool.Count >= 2, "Se requieren al menos 2 tipos de obstáculos. Actual: {0}", obstaclePool.Count);
+        Debug.AssertFormat(fruitPool.Count >= 8, "Se requieren al menos 8 tipos de frutas. Actual: {0}", fruitPool.Count);
+        Debug.AssertFormat(powerUpPool.Count >= 1, "Se requieren al menos un tipo de potenciadores. Actual: {0}", powerUpPool.Count);
+        Debug.AssertFormat(obstaclePool.Count >= 1, "Se requieren al menos un tipo de obstáculos. Actual: {0}", obstaclePool.Count);
     }
     
     private void InitializeObjectPool()
     {
         int poolSize = CalculateOptimalPoolSize();
-        gameObjectPool = new ObjectPool<GameObject>(CreatePooledElement,
-                                                    OnGetElementFromPool,
-                                                    OnReturnElementToPool,
-                                                    OnDestroyPoolElement,
-                                                    poolSize);
+        gameObjectPool = new ObjectPool<GameObject>(
+            CreatePooledElement,
+            poolSize,
+            obj => obj.SetActive(true),
+            obj => obj.SetActive(false),
+            obj => Destroy(obj)
+        );
     }
     
     private int CalculateOptimalPoolSize()
     {
-        // Calcular basado en la tasa de spawn más rápida posible
         float minSpawnDelay = difficultySettings[difficultySettings.Length - 1].minSpawnDelay;
         int maxSimultaneousElements = Mathf.CeilToInt(spawnY / (minSpawnDelay * Physics2D.gravity.magnitude));
         return (fruitPool.Count + powerUpPool.Count + obstaclePool.Count) * maxSimultaneousElements;
@@ -57,7 +58,6 @@ public class ElementSpawner : MonoBehaviour
         GameObject element = new GameObject("Pooled Element");
         element.SetActive(false);
         
-        // Configurar componentes básicos
         var spriteRenderer = element.AddComponent<SpriteRenderer>();
         spriteRenderer.sortingLayerName = "Gameplay";
         spriteRenderer.sortingOrder = 1;
@@ -69,7 +69,7 @@ public class ElementSpawner : MonoBehaviour
         var collider = element.AddComponent<BoxCollider2D>();
         collider.isTrigger = true;
         
-        var behavior = element.AddComponent<ElementBehavior>();
+        element.AddComponent<ElementBehavior>();
         
         return element;
     }

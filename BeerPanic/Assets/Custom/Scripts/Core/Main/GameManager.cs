@@ -10,8 +10,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private ElementSpawner elementSpawner;
     [SerializeField] private PlayerController playerController;
     [SerializeField] private UIManager uiManager;
-    
-    [Header("Configuración")]
     [SerializeField] private GameSettings gameSettings;
     
     private bool isGamePaused;
@@ -44,20 +42,8 @@ public class GameManager : MonoBehaviour
     {
         IsGameActive = false;
         Application.targetFrameRate = gameSettings.targetFrameRate;
-        
-        // Asegurar que AudioManager está inicializado
-        if (AudioManager.Instance != null)
-        {
-            AudioManager.Instance.Initialize(gameSettings.audioSettings);
-        }
-        
+        AudioManager.Instance?.Initialize(gameSettings.audioSettings);
         ResetLives();
-    }
-    
-    private void ResetLives()
-    {
-        currentLives = INITIAL_LIVES;
-        OnLivesChanged?.Invoke(currentLives);
     }
     
     public void StartGame()
@@ -112,5 +98,11 @@ public class GameManager : MonoBehaviour
         IsGameActive = false;
         OnGameOver?.Invoke();
         elementSpawner.StopSpawning();
+    }
+    
+    private void ResetLives()
+    {
+        currentLives = INITIAL_LIVES;
+        OnLivesChanged?.Invoke(currentLives);
     }
 }
