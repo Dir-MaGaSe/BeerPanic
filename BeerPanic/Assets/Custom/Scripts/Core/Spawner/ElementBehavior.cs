@@ -1,43 +1,49 @@
 using UnityEngine;
 
-public partial class ElementBehavior : MonoBehaviour
+public class ElementBehavior : MonoBehaviour
 {
-    private ElementBase elementData;
-    private ObjectPool<GameObject> pool;
-    private Rigidbody2D rb;
+    public ElementBase elementData; // Almacena el scriptable asociado
+    private Rigidbody2D rb; // Componente de física
+    private SpriteRenderer imageRender; // Render para el sprite del elemento
     
-    public void Initialize(ElementBase data, ObjectPool<GameObject> objectPool)
+    private void OnEnable() 
     {
-        elementData = data;
-        pool = objectPool;
+        // Inicializa el elemento cuando se activa
+        if (elementData != null) { Initialize(elementData); }
+    }
+
+    public void Initialize(ElementBase data)
+    {
+        // Configura el elemento según el scriptable recibido
         rb = GetComponent<Rigidbody2D>();
+        imageRender = GetComponent<SpriteRenderer>();
         
-        // Configurar velocidad de caída
+        imageRender.sprite = data.elementSprite; // Asigna el sprite del scriptable
+        elementData = data; // Guarda la referencia al scriptable para uso futuro
+    }
+    
+    private void FixedUpdate() 
+    {
+        // Aplica la velocidad de caída definida en el scriptable
         rb.velocity = Vector2.down * elementData.fallSpeed;
     }
     
-    private void Update()
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        // Verificar si está fuera de la pantalla
-        if (transform.position.y < -.1f) // Ajustar según necesidades
+        if (other.gameObject.CompareTag("Player"))
         {
-            ReturnToPool();
-        }
-    }
-    
-    public void ReturnToPool()
-    {
-        if (pool != null)
-        {
-            pool.Return(gameObject);
-        }
-    }
+            if (elementData.elementType == ElementBase.ElementType.Fruit)
+            {
 
-    private void OnCollisionEnter2D(Collision2D other) 
-    {
-        if (other.collider.CompareTag("Ground"))
-        {
-            ReturnToPool();
+            }
+            if (elementData.elementType == ElementBase.ElementType.PowerUp)
+            {
+                
+            }
+            if (elementData.elementType == ElementBase.ElementType.Obstacle)
+            {
+                
+            }
         }
     }
 }

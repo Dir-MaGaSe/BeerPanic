@@ -16,6 +16,8 @@ MonoBehaviour:
   levelNumber: 1
   scoreToUnlock: 0
   spawnRateMultiplier: 1
+  minSpawnDelay: 5
+  maxSpawnDelay: 5
   fallSpeedMultiplier: 0.5
   fruitProbability: 0.8
   powerUpProbability: 0.2
