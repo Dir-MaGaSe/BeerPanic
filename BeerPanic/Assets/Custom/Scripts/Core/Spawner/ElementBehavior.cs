@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class ElementBehavior : MonoBehaviour
@@ -5,6 +6,8 @@ public class ElementBehavior : MonoBehaviour
     public ElementBase elementData; // Almacena el scriptable asociado
     private Rigidbody2D rb; // Componente de física
     private SpriteRenderer imageRender; // Render para el sprite del elemento
+
+    private IEnumerator corutinePowerUp;
     
     private void OnEnable() 
     {
@@ -34,16 +37,34 @@ public class ElementBehavior : MonoBehaviour
         {
             if (elementData.elementType == ElementBase.ElementType.Fruit)
             {
-
+                GameManager.Instance.AddPoints(elementData.basePoints);
             }
             if (elementData.elementType == ElementBase.ElementType.PowerUp)
             {
-                
+                /*PowerUpElement newPowerUp = elementData;
+                if(corutinePowerUp == null)
+                {
+                    corutinePowerUp = PlayerSpeedBonusCoroutine(elementData.)
+                }*/
             }
             if (elementData.elementType == ElementBase.ElementType.Obstacle)
             {
-                
+                GameManager.Instance.AddPoints(elementData.basePoints);
+
+
             }
         }
+        
+        if (!other.gameObject.CompareTag("SpawnObject"))
+        {
+            this.gameObject.SetActive(false);
+        }
+    }
+
+    private IEnumerator PlayerSpeedBonusCoroutine(float bonus, float duration)
+    {
+        GameManager.Instance.CalculateSpeedBonus(bonus, true);
+        yield return new WaitForSeconds(duration);
+        GameManager.Instance.CalculateSpeedBonus(bonus, false);
     }
 }

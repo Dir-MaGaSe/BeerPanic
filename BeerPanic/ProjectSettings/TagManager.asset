@@ -5,9 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
-  - Spawn/Fruit
-  - Spawn/PowerUp
-  - Spawn/Obstacle
+  - SpawnObject
   layers:
   - Default
   - TransparentFX

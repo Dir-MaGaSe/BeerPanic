@@ -14,12 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementName: speedPlus
   elementSprite: {fileID: -3246028407001408874, guid: f42176bbc0b84b54e83c161abc6eb071, type: 3}
+  elementType: 1
   spawnProbability: 0.235
   fallSpeed: 3.5
-  mass: 1
-  linearDrag: 3
-  gravityScale: 0.4
   basePoints: 0
-  effectDuration: 15
+  effectDuration: 8
   effectMultiplier: 1.5
   powerUpType: 0

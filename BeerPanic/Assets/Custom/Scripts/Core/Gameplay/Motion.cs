@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Motion : MonoBehaviour
 {
+    //Movimiento
     [Header("Configuracion")]
     [SerializeField] private float moveSpeed;
     [Range(0f, .5f)][SerializeField] private float smoothing;
@@ -14,13 +15,19 @@ public class Motion : MonoBehaviour
     private Vector3 speed = Vector3.zero;
     private bool isFlipped = false;
 
+    //Animacion
+    private Animator animator;
+
     private void Start() 
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
     private void Update() 
     {
-        horizontalMove = Input.GetAxisRaw("Horizontal") * moveSpeed;
+        horizontalMove = (Input.GetAxisRaw("Horizontal") * moveSpeed) + GameManager.Instance.bonusSpeed;
+
+        animator.SetFloat("Horizontal", Mathf.Abs(horizontalMove));
     }
     private void FixedUpdate() 
     {
