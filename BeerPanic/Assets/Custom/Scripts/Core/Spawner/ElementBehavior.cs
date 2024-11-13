@@ -1,28 +1,36 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class ElementBehavior : MonoBehaviour
 {
-    public ElementBase elementData; // Almacena el scriptable asociado
+    private ElementBase elementData; // Almacena el scriptable asociado
     private Rigidbody2D rb; // Componente de física
     private SpriteRenderer imageRender; // Render para el sprite del elemento
 
-    private IEnumerator corutinePowerUp;
+    private AudioClip soundEffect; // Efecto de sonido
+    private ObjectPool<GameObject> pool;
+
+    private IEnumerator effectCoroutine; //Corutina para el manejo de powerups y obstaculos
     
     private void OnEnable() 
     {
         // Inicializa el elemento cuando se activa
-        if (elementData != null) { Initialize(elementData); }
+        if (elementData != null) { Initialize(elementData, pool); }
     }
 
-    public void Initialize(ElementBase data)
+    public void Initialize(ElementBase data, ObjectPool<GameObject> objectPool)
     {
-        // Configura el elemento según el scriptable recibido
         rb = GetComponent<Rigidbody2D>();
         imageRender = GetComponent<SpriteRenderer>();
+
+        pool = objectPool; // Almacena la referencia de la pool
+        elementData = data; // Guarda la referencia al scriptable
         
         imageRender.sprite = data.elementSprite; // Asigna el sprite del scriptable
-        elementData = data; // Guarda la referencia al scriptable para uso futuro
+        soundEffect = data.elementAudio; // Almacena el efecto de sonido del scriptable
+
+        effectCoroutine = null;
     }
     
     private void FixedUpdate() 
@@ -35,36 +43,77 @@ public class ElementBehavior : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            if (elementData.elementType == ElementBase.ElementType.Fruit)
+            // Realiza las acciones necesarias según el tipo de elemento
+            switch (elementData)
             {
-                GameManager.Instance.AddPoints(elementData.basePoints);
-            }
-            if (elementData.elementType == ElementBase.ElementType.PowerUp)
-            {
-                /*PowerUpElement newPowerUp = elementData;
-                if(corutinePowerUp == null)
-                {
-                    corutinePowerUp = PlayerSpeedBonusCoroutine(elementData.)
-                }*/
-            }
-            if (elementData.elementType == ElementBase.ElementType.Obstacle)
-            {
-                GameManager.Instance.AddPoints(elementData.basePoints);
+                case PowerUpElement powerUp:
+                    if(effectCoroutine == null)
+                    {
+                        effectCoroutine = ApplyEffectsCoroutine(powerUp.effectDuration, powerUp.effectMultiplier);
+                        StartCoroutine(effectCoroutine);
+                    }
+                    else
+                    {
+                        StopCoroutine(effectCoroutine);
+                        effectCoroutine = ApplyEffectsCoroutine(powerUp.effectDuration, powerUp.effectMultiplier);
+                        StartCoroutine(effectCoroutine);
+                    }
 
+                    break;
+                    
+                case ObstacleElement obstacle:
+                    if(effectCoroutine == null)
+                    {
+                        effectCoroutine = ApplyEffectsCoroutine(obstacle.effectDuration, obstacle.penaltyMultiplier);
+                        StartCoroutine(effectCoroutine);
+                    }
+                    else
+                    {
+                        StopCoroutine(effectCoroutine);
+                        effectCoroutine = ApplyEffectsCoroutine(obstacle.effectDuration, obstacle.penaltyMultiplier);
+                        StartCoroutine(effectCoroutine);
+                    }
 
+                    GameManager.Instance.AddPoints(obstacle.basePoints);
+                    
+                    break;
+
+                case FruitElement fruit:
+                    GameManager.Instance.AddPoints(fruit.basePoints);
+                    break;
+
+                default:
+                    Debug.LogWarning("Tipo de elemento no reconocido");
+                    break;
             }
+
+            AudioManager.Instance.PlayEffect(soundEffect);
         }
         
         if (!other.gameObject.CompareTag("SpawnObject"))
         {
-            this.gameObject.SetActive(false);
+            ReturnToPool();
         }
     }
 
-    private IEnumerator PlayerSpeedBonusCoroutine(float bonus, float duration)
+    private IEnumerator ApplyEffectsCoroutine(float duration, float multiplier)
     {
-        GameManager.Instance.CalculateSpeedBonus(bonus, true);
+        GameManager.Instance.CalculateSpeedBonus(multiplier, true);
         yield return new WaitForSeconds(duration);
-        GameManager.Instance.CalculateSpeedBonus(bonus, false);
+        GameManager.Instance.CalculateSpeedBonus(multiplier, false);
+        effectCoroutine = null;
+    }
+
+    // Función para devolver el objeto a la pool
+    private void ReturnToPool()
+    {
+        if (pool != null)
+        {
+            pool.Release(gameObject);
+        }
+        else
+        {
+            Debug.LogWarning("Pool no asignada para este objeto");
+        }
     }
 }

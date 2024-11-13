@@ -6,8 +6,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    [SerializeField] private int difficulty = 1;
+
     private int currentScore = 0;
-    public float bonusSpeed = 0;
+    private float bonusSpeed = 1;
 
 
     private void Awake()
@@ -26,17 +28,21 @@ public class GameManager : MonoBehaviour
     public void AddPoints(int points)
     {
         currentScore += points;
+        Debug.Log(currentScore);
     }
 
-    public void CalculateSpeedBonus(float bonus, bool isBonusActive)
+    public void CalculateSpeedBonus(float multiplier, bool isBonusActive)
     {
         if(isBonusActive)
         {
-            bonusSpeed = bonus;
+            bonusSpeed = multiplier;
         }
         else
         {
-            bonusSpeed = 0;
+            bonusSpeed = 1;
         }
     }
+
+    public float GetSpeedBonus() { return bonusSpeed; }
+    public int GetDifficulty() { return difficulty; }
 }

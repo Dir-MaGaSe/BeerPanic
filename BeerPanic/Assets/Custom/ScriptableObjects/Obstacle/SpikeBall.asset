@@ -15,8 +15,8 @@ MonoBehaviour:
   elementName: spikes
   elementSprite: {fileID: 21300000, guid: 60e5d93de53da5642a38fce5925c3efa, type: 3}
   elementType: 2
-  spawnProbability: 0.15
+  spawnProbability: 0.2
   fallSpeed: 3
-  basePoints: -25
+  basePoints: -30
   effectDuration: 5
   penaltyMultiplier: 0.5

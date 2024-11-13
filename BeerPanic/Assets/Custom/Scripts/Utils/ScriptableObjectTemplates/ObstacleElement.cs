@@ -4,5 +4,6 @@ using UnityEngine;
 public class ObstacleElement : ElementBase
 {
     [Header("Configuración de Obstáculo")]
-    public float effectDuration = 3f, penaltyMultiplier = 0.5f;
+    public float effectDuration = 3f;
+    public float penaltyMultiplier = 0.5f;
 }

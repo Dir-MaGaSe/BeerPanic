@@ -8,7 +8,6 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] Transform borderLeft;  // Límite izquierdo de la pantalla para el spawn
     [SerializeField] Transform borderRight; // Límite derecho de la pantalla para el spawn
     [SerializeField] private float spawnInterval = 1f; // Intervalo base de spawn
-    [SerializeField] private int difficultyLevel = 1;  // Nivel de dificultad que afecta las probabilidades de spawn
     
     [Header("Referencias")]
     [SerializeField] private GameObject prefabObject;  // Prefab base para los elementos
@@ -18,11 +17,16 @@ public class SpawnManager : MonoBehaviour
     
     private ObjectPool<GameObject> gameObjectPool; // Pool de objetos
     private float nextSpawnTime; // Tiempo siguiente de spawn
+    private int difficultyLevel;  // Nivel de dificultad que afecta las probabilidades de spawn
     
     private void Start()
     {
         InitializeObjectPool(); // Inicializa el pool de objetos
         nextSpawnTime = Time.time + spawnInterval; // Calcula el primer spawn
+        difficultyLevel = GameManager.Instance.GetDifficulty();
+
+        if(difficultyLevel < 1) { difficultyLevel = 1; }
+        if(difficultyLevel >= 7) { difficultyLevel = 7; }
     }
     
     private void Update()
@@ -89,7 +93,7 @@ public class SpawnManager : MonoBehaviour
         ElementBehavior behavior = pooledObject.GetComponent<ElementBehavior>();
         if (pooledObject != null)
         {
-            behavior.Initialize(data); // Inicializa el elemento con sus datos específicos
+            behavior.Initialize(data, gameObjectPool); // Inicializa el elemento con sus datos específicos
             ConfigurePosition(pooledObject); // Configura la posición inicial del spawn
         }
     }
@@ -104,7 +108,7 @@ public class SpawnManager : MonoBehaviour
     private void CalculateNextSpawnTime()
     {
         // Calcula el próximo tiempo de spawn según el nivel de dificultad
-        float spawnRate = spawnInterval * (1f - (difficultyLevel * 0.1f));
+        float spawnRate = spawnInterval * (1f - (difficultyLevel * 0.115f));
         nextSpawnTime = Time.time + spawnRate;
     }
 }

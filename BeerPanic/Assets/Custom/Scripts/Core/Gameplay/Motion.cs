@@ -18,6 +18,17 @@ public class Motion : MonoBehaviour
     //Animacion
     private Animator animator;
 
+    //Input System
+    private PlayerControls controls;
+
+    private void Awake()
+    {
+        controls = new PlayerControls();
+    }
+
+    private void OnEnable() { controls.Enable(); }
+    private void OnDisable() { controls.Disable(); }
+
     private void Start() 
     {
         rb = GetComponent<Rigidbody2D>();
@@ -25,13 +36,13 @@ public class Motion : MonoBehaviour
     }
     private void Update() 
     {
-        horizontalMove = (Input.GetAxisRaw("Horizontal") * moveSpeed) + GameManager.Instance.bonusSpeed;
+        horizontalMove = controls.Motion.Horizontal.ReadValue<float>() * moveSpeed;
 
         animator.SetFloat("Horizontal", Mathf.Abs(horizontalMove));
     }
     private void FixedUpdate() 
     {
-        Move(horizontalMove * Time.fixedDeltaTime);
+        Move((horizontalMove * GameManager.Instance.GetSpeedBonus()) * Time.fixedDeltaTime);
     }
 
     private void Move(float movement)

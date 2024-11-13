@@ -786,7 +786,7 @@ GameObject:
   - component: {fileID: 5355985459490791655}
   - component: {fileID: 5690746458462437698}
   m_Layer: 0
-  m_Name: levelGrid
+  m_Name: levelOneGrid
   m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
