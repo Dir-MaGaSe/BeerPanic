@@ -2440,7 +2440,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   txtGoal: {fileID: 0}
-  txtcurrentScore: {fileID: 0}
+  txtCurrentScore: {fileID: 217561100}
   hudPanel: {fileID: 0}
   pausePanel: {fileID: 0}
   gameoverPanel: {fileID: 0}

@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    [SerializeField] private int difficulty = 1;
+    [SerializeField] private int difficulty = 1, levelGoal;
 
     private int currentScore = 0;
     private float bonusSpeed = 1;
@@ -45,4 +45,5 @@ public class GameManager : MonoBehaviour
 
     public float GetSpeedBonus() { return bonusSpeed; }
     public int GetDifficulty() { return difficulty; }
+    public float GetCurrentScore() { return currentScore; }
 }

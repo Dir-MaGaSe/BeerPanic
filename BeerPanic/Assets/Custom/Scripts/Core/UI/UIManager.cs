@@ -8,6 +8,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI txtGoal, txtCurrentScore;
     [SerializeField] private GameObject hudPanel, pausePanel, gameoverPanel, winPanel;
 
+    private void Update()
+    {
+        txtCurrentScore.text = "SCORE: " + GameManager.Instance.GetCurrentScore();
+    }
+
     public void PauseGame()
     {
         Time.timeScale = 0f;
