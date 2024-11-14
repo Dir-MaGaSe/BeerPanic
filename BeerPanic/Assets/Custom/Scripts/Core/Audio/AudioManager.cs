@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
@@ -9,7 +7,7 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
-        if(GameManager.Instance == null)
+        if(AudioManager.Instance == null)
         {
             AudioManager.Instance = this;
             DontDestroyOnLoad(this.gameObject);

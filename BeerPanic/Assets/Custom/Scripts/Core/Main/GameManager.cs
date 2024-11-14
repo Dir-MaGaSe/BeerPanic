@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -8,7 +6,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private int difficulty = 1, levelGoal;
 
-    private int currentScore = 0;
+    private int currentScore = 0, currentLives = 3;
     private float bonusSpeed = 1;
 
 
@@ -25,10 +23,28 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Start() 
+    {
+        ResetScore();
+        ResetLives();
+        bonusSpeed = 1;
+    }
+
     public void AddPoints(int points)
     {
-        currentScore += points;
-        Debug.Log(currentScore);
+        int tempPoints = points;
+        if(difficulty >= 7)
+        {
+            if(points > 0){tempPoints = points / 2; }
+            if(points < 0){tempPoints = points * 2; }
+        }
+        
+        currentScore += tempPoints;
+
+        if(currentScore < 0)
+        {
+            currentScore = 0;
+        }
     }
 
     public void CalculateSpeedBonus(float multiplier, bool isBonusActive)
@@ -37,13 +53,28 @@ public class GameManager : MonoBehaviour
         {
             bonusSpeed = multiplier;
         }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        int temporaryLife = currentLives - damage;
+        
+        if(temporaryLife < 0)
+        {
+            currentLives = 0;
+        }
         else
         {
-            bonusSpeed = 1;
+            currentLives = temporaryLife;
         }
     }
 
+    public void ResetScore() { currentScore = 0; }
+    public void ResetLives() { currentLives = 3; }
+
     public float GetSpeedBonus() { return bonusSpeed; }
     public int GetDifficulty() { return difficulty; }
-    public float GetCurrentScore() { return currentScore; }
+    public int GetCurrentScore() { return currentScore; }
+    public int GetCurrentLives() { return currentLives; }
+    public int GetLevelGoal() { return levelGoal; }
 }

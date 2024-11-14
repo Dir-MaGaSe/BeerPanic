@@ -9,14 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6fe9c2ee375104240b7d13c2163348fe, type: 3}
-  m_Name: SpikeBall
+  m_Script: {fileID: 11500000, guid: 39eebc63ad459c645bb0087f8dc347eb, type: 3}
+  m_Name: LaNacional
   m_EditorClassIdentifier: 
-  elementName: spikes
-  elementSprite: {fileID: 21300000, guid: 60e5d93de53da5642a38fce5925c3efa, type: 3}
+  elementName: LaNacional
+  elementSprite: {fileID: 21300000, guid: b26be224c0e48ab41a476af9372c2bf4, type: 3}
   elementAudio: {fileID: 0}
-  spawnProbability: 0.3
-  fallSpeed: 3.5
-  basePoints: -30
-  effectDuration: 5
-  penaltyMultiplier: 0.5
+  spawnProbability: 0.01
+  fallSpeed: 5.55
+  basePoints: 300
+  validCombinations: []
+  combinationMultiplier: 2

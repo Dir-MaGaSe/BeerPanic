@@ -64,8 +64,8 @@ public class SpawnManager : MonoBehaviour
         ElementBase elementToSpawn = null;
         
         // Ajustar probabilidades según dificultad
-        float fruitProb = .8f - (difficultyLevel * 0.1f);
-        float powerUpProb = 0.05f;
+        float fruitProb = .9f - (difficultyLevel * 0.085f);
+        float powerUpProb = 0.035f;
         
         if (random < fruitProb)
         {

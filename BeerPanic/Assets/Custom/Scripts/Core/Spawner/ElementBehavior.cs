@@ -75,6 +75,7 @@ public class ElementBehavior : MonoBehaviour
                     }
 
                     GameManager.Instance.AddPoints(obstacle.basePoints);
+                    GameManager.Instance.TakeDamage(1);
                     
                     break;
 
